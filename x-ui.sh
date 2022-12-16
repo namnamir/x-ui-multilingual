@@ -197,7 +197,7 @@ fi
 
 confirm() {
     if [[ $# > 1 ]]; then
-        echo && read -p "$(LOG $1"${msg_06}"$2"]: ")" temp
+        echo && read -p "$(LOG $1" [${msg_06}" $2"]: ")" temp
         if [[ x"${temp}" == x"" ]]; then
             temp=$2
         fi
