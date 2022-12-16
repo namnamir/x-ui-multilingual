@@ -1,4 +1,8 @@
 {
+  "log": {
+    "loglevel": "warning", 
+    "access": "./x-ui-access.log"
+  },
   "api": {
     "services": [
       "HandlerService",

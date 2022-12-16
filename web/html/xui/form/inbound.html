@@ -14,25 +14,25 @@
     </a-form-item>
     <a-form-item>
         <span slot="label">
-            监听 IP
+            {{ i18n "monitor-ip" }}
             <a-tooltip>
                 <template slot="title">
-                    默认留空即可
+                    {{ i18n "monitor-ip-desc" }}
                 </template>
                 <a-icon type="question-circle" theme="filled"></a-icon>
             </a-tooltip>
         </span>
         <a-input v-model.trim="inbound.listen"></a-input>
     </a-form-item>
-    <a-form-item label="端口">
+    <a-form-item label='{{ i18n "port" }}'>
         <a-input type="number" v-model.number="inbound.port"></a-input>
     </a-form-item>
     <a-form-item>
         <span slot="label">
-            总流量(GB)
+            {{ i18n "bandwidth" }}
             <a-tooltip>
                 <template slot="title">
-                    0 表示不限制
+                    {{ i18n "bandwidth-desc" }}
                 </template>
                 <a-icon type="question-circle" theme="filled"></a-icon>
             </a-tooltip>
@@ -41,10 +41,10 @@
     </a-form-item>
     <a-form-item>
         <span slot="label">
-            到期时间
+            {{ i18n "expiry" }}
             <a-tooltip>
                 <template slot="title">
-                    留空则永不到期
+                    {{ i18n "expiry-desc" }}
                 </template>
                 <a-icon type="question-circle" theme="filled"></a-icon>
             </a-tooltip>

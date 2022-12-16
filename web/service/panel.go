@@ -19,7 +19,7 @@ func (s *PanelService) RestartPanel(delay time.Duration) error {
 		time.Sleep(delay)
 		err := p.Signal(syscall.SIGHUP)
 		if err != nil {
-			logger.Error("send signal SIGHUP failed:", err)
+			logger.Error(tr_error_sighup_logger, err)
 		}
 	}()
 	return nil

@@ -235,11 +235,11 @@ func (s *Server) initI18n(engine *gin.Engine) error {
 		names := make([]string, 0)
 		keyLen := len(key)
 		for i := 0; i < keyLen-1; i++ {
-			if key[i:i+2] == "{{" { // 判断开头 "{{"
+			if key[i:i+2] == "{{" { // mind the beginning of "{{"
 				j := i + 2
 				isFind := false
 				for ; j < keyLen-1; j++ {
-					if key[j:j+2] == "}}" { // 结尾 "}}"
+					if key[j:j+2] == "}}" { // mind the ending of "}}"
 						isFind = true
 						break
 					}
@@ -257,7 +257,7 @@ func (s *Server) initI18n(engine *gin.Engine) error {
 	engine.FuncMap["i18n"] = func(key string, params ...string) (string, error) {
 		names := findI18nParamNames(key)
 		if len(names) != len(params) {
-			return "", common.NewError("find names:", names, "---------- params:", params, "---------- num not equal")
+			return "", common.NewError(tr_error_find_name, names, "---------- params:", params, "---------- num not equal")
 		}
 		templateData := map[string]interface{}{}
 		for i := range names {
@@ -282,32 +282,32 @@ func (s *Server) initI18n(engine *gin.Engine) error {
 func (s *Server) startTask() {
 	err := s.xrayService.RestartXray(true)
 	if err != nil {
-		logger.Warning("start xray failed:", err)
+		logger.Warning(tr_error_xray_start_logger, err)
 	}
-	// 每 30 秒检查一次 xray 是否在运行
+	// every 30 seconds check if xray is running
 	s.cron.AddJob("@every 30s", job.NewCheckXrayRunningJob())
 
 	go func() {
 		time.Sleep(time.Second * 5)
-		// 每 10 秒统计一次流量，首次启动延迟 5 秒，与重启 xray 的时间错开
+		// Count the traffic every 10 seconds, the first startup delay is 5 seconds, and the time to restart xray is staggered
 		s.cron.AddJob("@every 10s", job.NewXrayTrafficJob())
 	}()
 
-	// 每 30 秒检查一次 inbound 流量超出和到期的情况
+	// Check every 30 seconds for inbound flow exceeded and expired
 	s.cron.AddJob("@every 30s", job.NewCheckInboundJob())
-	// 每一天提示一次流量情况,上海时间8点30
+	// Prompt the traffic status once a day, at 8:30 Shanghai time
 	var entry cron.EntryID
 	isTgbotenabled, err := s.settingService.GetTgbotenabled()
 	if (err == nil) && (isTgbotenabled) {
 		runtime, err := s.settingService.GetTgbotRuntime()
 		if err != nil || runtime == "" {
-			logger.Errorf("Add NewStatsNotifyJob error[%s],Runtime[%s] invalid,wil run default", err, runtime)
+			logger.Errorf(tr_error_new_state_logger_01, err, runtime)
 			runtime = "@daily"
 		}
-		logger.Infof("Tg notify enabled,run at %s", runtime)
+		logger.Infof(tr_new_telegram_logger, runtime)
 		entry, err = s.cron.AddJob(runtime, job.NewStatsNotifyJob())
 		if err != nil {
-			logger.Warning("Add NewStatsNotifyJob error", err)
+			logger.Warning(tr_error_new_state_logger_02, err)
 			return
 		}
 	} else {
@@ -316,7 +316,7 @@ func (s *Server) startTask() {
 }
 
 func (s *Server) Start() (err error) {
-	//这是一个匿名函数，没没有函数名
+	// This is an anonymous function, no function name
 	defer func() {
 		if err != nil {
 			s.Stop()
@@ -370,9 +370,9 @@ func (s *Server) Start() (err error) {
 	}
 
 	if certFile != "" || keyFile != "" {
-		logger.Info("web server run https on", listener.Addr())
+		logger.Info(tr_https_webserver_logger, listener.Addr())
 	} else {
-		logger.Info("web server run http on", listener.Addr())
+		logger.Info(tr_http_webserver_logger, listener.Addr())
 	}
 	s.listener = listener
 

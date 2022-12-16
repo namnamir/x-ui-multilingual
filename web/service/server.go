@@ -25,9 +25,9 @@ import (
 type ProcessState string
 
 const (
-	Running ProcessState = "running"
-	Stop    ProcessState = "stop"
-	Error   ProcessState = "error"
+	Running ProcessState = tr_running
+	Stop    ProcessState = tr_stop
+	Error   ProcessState = tr_error
 )
 
 type Status struct {
@@ -80,21 +80,21 @@ func (s *ServerService) GetStatus(lastStatus *Status) *Status {
 
 	percents, err := cpu.Percent(0, false)
 	if err != nil {
-		logger.Warning("get cpu percent failed:", err)
+		logger.Warning(tr_error_get_cpu_usage_logger, err)
 	} else {
 		status.Cpu = percents[0]
 	}
 
 	upTime, err := host.Uptime()
 	if err != nil {
-		logger.Warning("get uptime failed:", err)
+		logger.Warning(tr_error_get_uptime_logger, err)
 	} else {
 		status.Uptime = upTime
 	}
 
 	memInfo, err := mem.VirtualMemory()
 	if err != nil {
-		logger.Warning("get virtual memory failed:", err)
+		logger.Warning(tr_error_get_memory_logger, err)
 	} else {
 		status.Mem.Current = memInfo.Used
 		status.Mem.Total = memInfo.Total
@@ -102,7 +102,7 @@ func (s *ServerService) GetStatus(lastStatus *Status) *Status {
 
 	swapInfo, err := mem.SwapMemory()
 	if err != nil {
-		logger.Warning("get swap memory failed:", err)
+		logger.Warning(tr_error_get_swap_logger, err)
 	} else {
 		status.Swap.Current = swapInfo.Used
 		status.Swap.Total = swapInfo.Total
@@ -110,7 +110,7 @@ func (s *ServerService) GetStatus(lastStatus *Status) *Status {
 
 	distInfo, err := disk.Usage("/")
 	if err != nil {
-		logger.Warning("get dist usage failed:", err)
+		logger.Warning(tr_error_get_disk_logger, err)
 	} else {
 		status.Disk.Current = distInfo.Used
 		status.Disk.Total = distInfo.Total
@@ -118,14 +118,14 @@ func (s *ServerService) GetStatus(lastStatus *Status) *Status {
 
 	avgState, err := load.Avg()
 	if err != nil {
-		logger.Warning("get load avg failed:", err)
+		logger.Warning(tr_error_get_load_logger, err)
 	} else {
 		status.Loads = []float64{avgState.Load1, avgState.Load5, avgState.Load15}
 	}
 
 	ioStats, err := net.IOCounters(false)
 	if err != nil {
-		logger.Warning("get io counters failed:", err)
+		logger.Warning(tr_error_get_io_logger_01, err)
 	} else if len(ioStats) > 0 {
 		ioStat := ioStats[0]
 		status.NetTraffic.Sent = ioStat.BytesSent
@@ -140,17 +140,17 @@ func (s *ServerService) GetStatus(lastStatus *Status) *Status {
 			status.NetIO.Down = down
 		}
 	} else {
-		logger.Warning("can not find io counters")
+		logger.Warning(tr_error_get_io_logger_02)
 	}
 
 	status.TcpCount, err = sys.GetTCPCount()
 	if err != nil {
-		logger.Warning("get tcp connections failed:", err)
+		logger.Warning(tr_error_get_tcp_logger, err)
 	}
 
 	status.UdpCount, err = sys.GetUDPCount()
 	if err != nil {
-		logger.Warning("get udp connections failed:", err)
+		logger.Warning(tr_error_get_udp_logger, err)
 	}
 
 	if s.xrayService.IsXrayRunning() {
@@ -264,7 +264,7 @@ func (s *ServerService) UpdateXray(version string) error {
 	defer func() {
 		err := s.xrayService.RestartXray(true)
 		if err != nil {
-			logger.Error("start xray failed:", err)
+			logger.Error(tr_error_xray_reset_logger, err)
 		}
 	}()
 

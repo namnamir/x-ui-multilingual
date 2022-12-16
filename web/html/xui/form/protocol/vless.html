@@ -1,18 +1,18 @@
 {{define "form/vless"}}
 <a-form layout="inline">
-    <a-form-item label="id">
+    <a-form-item label='{{ i18n "vless-id" }}'>
         <a-input v-model.trim="inbound.settings.vlesses[0].id"></a-input>
     </a-form-item>
-    <a-form-item v-if="inbound.xtls" label="flow">
+    <a-form-item v-if="inbound.xtls" label='{{ i18n "flow" }}'>
         <a-select v-model="inbound.settings.vlesses[0].flow" style="width: 150px">
-            <a-select-option value="">无</a-select-option>
+            <a-select-option value="">'{{ i18n "none" }}'</a-select-option>
             <a-select-option v-for="key in FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
         </a-select>
     </a-form-item>
 </a-form>
 
 <a-form layout="inline">
-    <a-form-item label="fallbacks">
+    <a-form-item label='{{ i18n "fallbacks" }}'>
         <a-row>
             <a-button type="primary" size="small"
                       @click="inbound.settings.addFallback()">
@@ -29,19 +29,19 @@
         <a-icon type="delete" @click="() => inbound.settings.delFallback(index)"
                 style="color: rgb(255, 77, 79);cursor: pointer;"/>
     </a-divider>
-    <a-form-item label="name">
+    <a-form-item label='{{ i18n "name" }}'>
         <a-input v-model="fallback.name"></a-input>
     </a-form-item>
-    <a-form-item label="alpn">
+    <a-form-item label='{{ i18n "alpn" }}'>
         <a-input v-model="fallback.alpn"></a-input>
     </a-form-item>
-    <a-form-item label="path">
+    <a-form-item label='{{ i18n "path" }}'>
         <a-input v-model="fallback.path"></a-input>
     </a-form-item>
-    <a-form-item label="dest">
+    <a-form-item label='{{ i18n "dest" }}'>
         <a-input v-model="fallback.dest"></a-input>
     </a-form-item>
-    <a-form-item label="xver">
+    <a-form-item label='{{ i18n "xver" }}'>
         <a-input type="number" v-model.number="fallback.xver"></a-input>
     </a-form-item>
     <a-divider v-if="inbound.settings.fallbacks.length - 1 === index"/>

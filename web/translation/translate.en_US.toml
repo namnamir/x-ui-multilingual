@@ -1,12 +1,337 @@
-"username" = "username"
-"password" = "password"
-"login" = "login"
-"confirm" = "confirm"
-"cancel" = "cancel"
-"close" = "close"
-"copy" = "copy"
-"copied" = "copied"
-"download" = "download"
-"remark" = "remark"
-"enable" = "enable"
-"protocol" = "protocol"
+# use the variables instead of texts in the HTML
+# {{ i18n "VAR_NAME" }}
+
+##########################
+# general terms
+##########################
+"protocol" = "Protocol"
+"port" = "Port"
+"tcp" = "TCP"
+"udp" = "UDP"
+"tcp-udp" = "TCP + UDP"
+"confirm" = "Confirm"
+"download" = "Download"
+"enable" = "Enable"
+"ok" = "OK"
+"close" = "Close"
+"cancel" = "Cancel"
+"apply" = "Apply"
+"yes" = "Yes"
+"no" = "No"
+"delete" = "Delete"
+"edit" = "Edit"
+"none" = "None"
+"loading" = "Loading ..."
+"add" = "Add"
+"modify" = "Modify"
+"reset" = "Reset"
+
+##########################
+# web/html/login.html
+##########################
+"username" = "Username"
+"password" = "Password"
+"login-button" = "Login"
+
+##########################
+# web/html/common/qrcode_modal.html
+# web/html/common/text_modal.html
+##########################
+"copy" = "Copy"
+"copied" = "Copied"
+
+##########################
+# web/html/xui/common_sider.html
+# list of icons: https://1x.antdv.com/components/icon/
+##########################
+"menu-status" = "System Status"
+"menu-inbound" = "User Management"
+"menu-settings" = "X-UI Panel Settings"
+"menu-link-title" = "Contact Us"
+"menu-link-item-01-link" = "https://github.com/namnamir/x-ui-multilingual"
+"menu-link-item-01-icon" = "github"
+"menu-link-item-01-text" = "Github"
+"menu-link-item-02-link" = "https://t.me/+GJG4N5VYJfw0OTM0"
+"menu-link-item-02-icon" = "sound"
+"menu-link-item-02-text" = "Telegram"
+"menu-link-item-03-link" = "https://twitter.com/namnamir"
+"menu-link-item-03-icon" = "twitter"
+"menu-link-item-03-text" = "Twitter"
+"menu-link-item-04-link" = "https://instagram.com/namnamir"
+"menu-link-item-04-icon" = "instagram"
+"menu-link-item-04-text" = "Instagram"
+"menu-link-item-05-link" = "https://namnam.ir"
+"menu-link-item-05-icon" = "appstore"
+"menu-link-item-05-text" = "Blog"
+"menu-logout" = "Logout"
+
+##########################
+# web/html/xui/inbound_modal.html
+# web/html/xui/inbound_info_modal.html
+##########################
+"copy-link" = "Copy Link"
+"copy-success" = "Copied Successfully"
+"detailed-info" = "Detailed Information"
+
+##########################
+# web/html/xui/inbounds.html
+##########################
+"first-warning" = "Please go to the panel settings as soon as possible to modify the username and password, otherwise there may be a risk of leaking account information"
+"upload-download" = "Total Uploads / Downloads:"
+"usage" = "Total Usage:"
+"no-accounts" = "Number of Accounts:"
+"action" = "Modify"
+"qr-code" = "QR Code"
+"qr-code-modal" = "The QR Code for This Connection"
+"reset-traffic" = "Reset Traffic"
+"unlimited-traffic" = "Unlimited"
+"show" = "Show"
+"tls" = "TLS"
+"xtls" = "XTLS"
+"never-expire" = "never"
+"header-action" = "-"
+"header-enable" = "Enable"
+"header-id" = "ID"
+"header-name" = "Name"
+"header-protocol" = "Protocol"
+"header-port" = "Port"
+"header-details" = "Details"
+"header-traffic" = "Traffic ↑|↓"
+"header-transmission" = "Transmission"
+"header-expiry" = "Expiration Date"
+"add-user" = "Add a User"
+"modify-user" = "Modify the User"
+"delete-user" = "Delete the User"
+"reset-user-traffic-01" = "Reset the user traffic"
+"reset-user-traffic-02" = "Are you sure you want to reset all traffic to 0? It is unrecoverable."
+"you-sure" = "Are you sure?"
+"search" = "Search"
+
+##########################
+# web/html/xui/index.html
+##########################
+"cpu" = "CPU"
+"ram" = "RAM"
+"swap" = "SWAP"
+"disk" = "DISK"
+"status" = "Xray Status"
+"uptime" = "Uptime"
+"bootup" = "System uptime since the boot up"
+"load" = "System Load"
+"connections" = "TCP / UDP Connections"
+"connections-info" = "The total number of the connections on all NICs"
+"upload-speed" = "The total upload speed on all NICs"
+"download-speed" = "The total download speed on all NICs"
+"upload-traffic" = "The total upload traffic on all NICs since the last boot up"
+"download-traffic" = "The total download traffic on all NICs since the last boot up"
+"version" = "Change Version"
+"change-version-01" = "Click on the version you want to switch"
+"change-version-02" = "Please select the version carefully, old versions may not be compatible with the configuration"
+"change-title" = "Change Xray Version"
+"change-question" = "Do you want to switch the xray version to ${version} ?"
+"change-apply" = "Applying the selected version. Please do not refresh the page."
+"state-running" = "Running"
+"state-stop" = "Stop"
+"state-error" = "Error"
+
+##########################
+# web/html/xui/setting.html
+##########################
+"tab-panel-config" = "Panel Configuration"
+"panel-ip" = "Panel Monitoring IP"
+"panel-ip-desc" = "By default, leave blank to listen to all IPs (0.0.0.0). Restart the panel to take effect."
+"panel-port" = "Panel Port"
+"panel-port-desc" = "Restart the panel to take effect"
+"panel-ssl-public" = "Path to the SSL Public Key"
+"panel-ssl-public-desc" = "Fill in an absolute path starting with '/'. Restart the panel to take effect."
+"panel-ssl-private" = "Path to the SSL Private Key"
+"panel-ssl-private-desc" = "Fill in an absolute path starting with '/'. Restart the panel to take effect."
+"panel-url" = "Panel URL Path"
+"panel-url-desc" = "Must start and end with '/'. Restart the panel to take effect."
+"tab-user-settings" = "User Settings"
+"current-username" = "Current Username"
+"current-password" = "Current Password"
+"new-username" = "New Username"
+"new-password" = "New Password"
+"tab-xray-config" = "Xray Configuration"
+"xray-config" = "Xray Configuration File Content" 
+"xray-config-desc" = "The configuration file should be based on the template. Restart the panel to take effect."
+"tab-telegram-settings" = "Telegram Settings"
+"enable-telegram" = "Enable Telegram Bot"
+"enable-telegram-desc" = "Restart the panel to take effect."
+"telegram-token" = "Telegram Bot Token"
+"telegram-token-desc" = "Restart the panel to take effect."
+"telegram-chatid" = "Telegram Bot ChatId"
+"telegram-chatid-desc" = "Restart the panel to take effect."
+"telegram-time" = "Telegram Bot Notification Time"
+"telegram-time-desc" = "Use the Crontab timing format. Restart the panel to take effect."
+"tab-other-settings" = "Other Settings"
+"timezone" = "Time Zone"
+"timezone-desc" = "The scheduled tasks run according to the time zone. Restart the panel to take effect."
+"save-button" = "Save Changes"
+"reset-button" = "Reset Panel"
+"reset-modal" = "You are about resetting the X-UI panel"
+"reset-modal-desc" = "Are you sure you want to restart the panel? By clicking OK, the panel will restart within 3 seconds. If you cannot access the panel after restarting, please go to the server to check the panel log."
+
+##########################
+# web/html/xui/form/inbound.html
+##########################
+"remark" = "Name"
+"bandwidth" = "Limit Bandwidth (GB)"
+"bandwidth-desc" = "0 means unlimited"
+"expiry" = "Expiration Date"
+"expiry-desc" = "Leave it blank if you like to expire never"
+"monitor-ip" = "Monitor IP"
+"monitor-ip-desc" = "Leave it blank by default"
+
+##########################
+# web/html/xui/form/sniffing.html
+##########################
+"sniff" = "Sniffing"
+"sniff-desc" = "If there is no special requirement, just keep the default settings."
+
+##########################
+# web/html/xui/form/sniffing.html
+##########################
+"domain-name" = "Domain Name"
+"alpn" = "ALPN"
+"http11-2" = "HTTP/1.1-H2"
+"certificate" = "Certificate"
+"cert-path" = "Certificate File Path"
+"cert-content" = "Certificate File Content"
+"cert-public-path" = "Path to the Public Key"
+"cert-private-path" = "Path to the Private Key"
+"public-key" = "Public Key Content"
+"private-key" = "Private Key Content"
+"tcp-proxy" = "Accept Proxy Protocol"
+
+##########################
+# web/html/xui/form/protocol/dokodemo.html
+##########################
+"dest-address" = "Destination Address"
+"dest-port" = "Destination Port"
+
+##########################
+# web/html/xui/form/protocol/shadowsocks.html
+"encryption-method" = "Encryption Method"
+
+##########################
+# web/html/xui/form/protocol/socks.html
+"authentication" = "Authentication"
+"enable-udp" = "Enable UDP"
+"ip-address" = "IP Address"
+
+##########################
+# web/html/xui/form/protocol/trojan.html
+##########################
+"flow" = "Flow"
+"fallbacks" = "Fallbacks"
+"path" = "Path"
+"name" = "Name"
+"dest" = "Destination"
+"xver" = "xver"
+
+##########################
+# web/html/xui/form/protocol/vless.html
+##########################
+"vless-id" = "ID"
+
+##########################
+# web/html/xui/form/protocol/vmess.html
+##########################
+"vmess-id" = "ID"
+"extra-id" = "Extra ID"
+"disable-insecure-encryption" = "Disable Insecure Encryption"
+
+##########################
+# web/html/xui/form/stream/stream_grpc.html
+##########################
+"service-name" = "Service Name"
+
+##########################
+# web/html/xui/form/stream/stream_grpc.html
+##########################
+"host" = "Host"
+
+##########################
+# web/html/xui/form/stream/stream_kcp.html
+##########################
+"type" = "Type"
+"kpc-none" = "None（not camouflage)"
+"kpc-srtp" = "STRP（camouflage video call)"
+"kpc-utp" = "UTP（camouflage BT download)"
+"kpc-wechat" = "WeChat-video（camouflage WeChat video)"
+"kpc-wireguard" = "WireGuard（camouflage wireguard packages)"
+"kpc-dtls" = "DTLS（camouflage DTLS 1.2 packages)"
+"seed" = "Seed"
+"mut" = "MTU"
+"tti" = "TTI (ms)"
+"uplink-capacity" = "Uplink Capacity (MB/S)"
+"downlink-capacity" = "Downlink Capacity (MB/S)"
+"congestion" = "Congestion"
+"read-buffer" = "Read Buffer Size (MB)"
+"write-buffer" = "Write Buffer Size (MB)"
+
+##########################
+# web/html/xui/form/stream/stream_quic.html
+##########################
+"key" = "Key"
+"aes-128-gcm" = "AES-128-GCM"
+"chacha20-poly1305" = "ChaCha20-Poly1305"
+
+##########################
+# web/html/xui/form/stream/stream_quic.html
+##########################
+"network" = "Network"
+"grpc" = "GRPC"
+"quic" = "QUIC"
+"ws" = "WS"
+"http" = "HTTP"
+"kcp" = "KCP"
+
+##########################
+# web/html/xui/form/stream/stream_ws.html
+##########################
+"ws-proxy" = "Accept Proxy Protocol"
+"request-header" = "Request Header"
+"request-path" = "Request Path"
+
+##########################
+# web/html/xui/form/stream/stream_tcp.html
+##########################
+"http-masquerade" = "HTTP Masquerade"
+"request-version" = "Request Version"
+"request-method" = "Request Method"
+"request-header-host" = "microsoft.com"
+"response-version" = "Response Version"
+"response-status" = "Response Status"
+"response-description" = "Response Description"
+"response-header" = "Response Header"
+
+##########################
+# web/html/xui/component/inbound_info.html
+##########################
+"field-transmission" = "Transmission: "
+"field-username" = "Username: "
+"field-password" = "Password: "
+"field-encryption" = "Encryption: "
+"field-flow" = "Flow: "
+"field-uuid" = "UUID: "
+"field-alt-id" = "Alt ID: "
+"field-protocol" = "Protocol: "
+"field-address" = "Host/IP: "
+"field-port" = "Port: "
+"field-xtls-domain" = "XTLS Domain Name: "
+"field-tls-domain" = "TLS Domain Name: "
+"field-xtls" = "XTLS: "
+"field-tls" = "TLS: "
+"field-grpc-name" = "GRPC Service Name: "
+"field-kpc-seed" = "KPC Password: "
+"field-kpc-encryption" = "KPC Encryption: "
+"field-quic-encryption" = "QUIC Encryption: "
+"field-quic-key" = "QUIC Password: "
+"field-quic-camouflage" = "QUIC Camouflage: "
+"field-path" = "Path: "
+"field-host" = "Host: "
+"field-on" = "On"
+"field-off" = "Off"

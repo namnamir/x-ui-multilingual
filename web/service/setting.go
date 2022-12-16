@@ -69,7 +69,7 @@ func (s *SettingService) GetAllSetting() (*entity.AllSetting, error) {
 		}
 
 		if !found {
-			// 有些设置自动生成，不需要返回到前端给用户修改
+			// Some settings are automatically generated and do not need to be returned to the front end for the user to modify
 			return nil
 		}
 
@@ -86,7 +86,7 @@ func (s *SettingService) GetAllSetting() (*entity.AllSetting, error) {
 		case bool:
 			fieldV.SetBool(value == "true")
 		default:
-			return common.NewErrorf("unknown field %v type %v", key, t)
+			return common.NewErrorf(tr_error_unkown_field, key, t)
 		}
 		return
 	}
@@ -149,7 +149,7 @@ func (s *SettingService) getString(key string) (string, error) {
 	if database.IsNotFound(err) {
 		value, ok := defaultValueMap[key]
 		if !ok {
-			return "", common.NewErrorf("key <%v> not in defaultValueMap", key)
+			return "", common.NewErrorf(tr_error_missed_key, key)
 		}
 		return value, nil
 	} else if err != nil {
@@ -247,7 +247,7 @@ func (s *SettingService) GetSecret() ([]byte, error) {
 	if secret == defaultValueMap["secret"] {
 		err := s.saveSetting("secret", secret)
 		if err != nil {
-			logger.Warning("save secret failed:", err)
+			logger.Warning(tr_error_save_fail, err)
 		}
 	}
 	return []byte(secret), err
@@ -275,7 +275,7 @@ func (s *SettingService) GetTimeLocation() (*time.Location, error) {
 	location, err := time.LoadLocation(l)
 	if err != nil {
 		defaultLocation := defaultValueMap["timeLocation"]
-		logger.Errorf("location <%v> not exist, using default location: %v", l, defaultLocation)
+		logger.Errorf(tr_error_missed_location, l, defaultLocation)
 		return time.LoadLocation(defaultLocation)
 	}
 	return location, nil

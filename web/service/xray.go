@@ -47,7 +47,7 @@ func (s *XrayService) GetXrayResult() string {
 
 func (s *XrayService) GetXrayVersion() string {
 	if p == nil {
-		return "Unknown"
+		return tr_xray_version_unknown
 	}
 	return p.GetVersion()
 }
@@ -80,7 +80,7 @@ func (s *XrayService) GetXrayConfig() (*xray.Config, error) {
 
 func (s *XrayService) GetXrayTraffic() ([]*xray.Traffic, error) {
 	if !s.IsXrayRunning() {
-		return nil, errors.New("xray is not running")
+		return nil, errors.New(tr_error_xray)
 	}
 	return p.GetTraffic(true)
 }
@@ -88,7 +88,7 @@ func (s *XrayService) GetXrayTraffic() ([]*xray.Traffic, error) {
 func (s *XrayService) RestartXray(isForce bool) error {
 	lock.Lock()
 	defer lock.Unlock()
-	logger.Debug("restart xray, force:", isForce)
+	logger.Debug(tr_xray_restart_logger_01, isForce)
 
 	xrayConfig, err := s.GetXrayConfig()
 	if err != nil {
@@ -97,7 +97,7 @@ func (s *XrayService) RestartXray(isForce bool) error {
 
 	if p != nil && p.IsRunning() {
 		if !isForce && p.GetConfig().Equals(xrayConfig) {
-			logger.Debug("not need to restart xray")
+			logger.Debug(tr_xray_restart_logger_02)
 			return nil
 		}
 		p.Stop()
@@ -111,11 +111,11 @@ func (s *XrayService) RestartXray(isForce bool) error {
 func (s *XrayService) StopXray() error {
 	lock.Lock()
 	defer lock.Unlock()
-	logger.Debug("stop xray")
+	logger.Debug(tr_xray_stop_logger)
 	if s.IsXrayRunning() {
 		return p.Stop()
 	}
-	return errors.New("xray is not running")
+	return errors.New(tr_error_xray)
 }
 
 func (s *XrayService) SetToNeedRestart() {

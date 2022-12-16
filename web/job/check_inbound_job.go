@@ -17,9 +17,9 @@ func NewCheckInboundJob() *CheckInboundJob {
 func (j *CheckInboundJob) Run() {
 	count, err := j.inboundService.DisableInvalidInbounds()
 	if err != nil {
-		logger.Warning("disable invalid inbounds err:", err)
+		logger.Warning(tr_error_invalid_inbound_logger, err)
 	} else if count > 0 {
-		logger.Debugf("disabled %v inbounds", count)
+		logger.Debugf(tr_disabled_inbound, count)
 		j.xrayService.SetToNeedRestart()
 	}
 }

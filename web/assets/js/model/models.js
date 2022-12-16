@@ -169,7 +169,7 @@ class AllSetting {
         this.tgRunTime = "";
         this.xrayTemplateConfig = "";
 
-        this.timeLocation = "Asia/Shanghai";
+        this.timeLocation = "Asia/Tehran";
 
         if (data == null) {
             return

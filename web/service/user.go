@@ -5,7 +5,6 @@ import (
 	"x-ui/database"
 	"x-ui/database/model"
 	"x-ui/logger"
-
 	"gorm.io/gorm"
 )
 
@@ -36,7 +35,7 @@ func (s *UserService) CheckUser(username string, password string) *model.User {
 	if err == gorm.ErrRecordNotFound {
 		return nil
 	} else if err != nil {
-		logger.Warning("check user err:", err)
+		logger.Warning(tr_error_user, err)
 		return nil
 	}
 	return user
@@ -53,9 +52,9 @@ func (s *UserService) UpdateUser(id int, username string, password string) error
 
 func (s *UserService) UpdateFirstUser(username string, password string) error {
 	if username == "" {
-		return errors.New("username can not be empty")
+		return errors.New(tr_error_empty_username)
 	} else if password == "" {
-		return errors.New("password can not be empty")
+		return errors.New(tr_error_empty_password)
 	}
 	db := database.GetDB()
 	user := &model.User{}

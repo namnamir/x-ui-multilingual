@@ -1,4 +1,4 @@
-name: Release X-ui
+name: Release X-UI
 on:
   push:
     tags:
@@ -15,14 +15,14 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GAYHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           draft: true
           prerelease: true
   linuxamd64build:
-    name: build x-ui amd64 version
+    name: Build X-UI amd64 version
     needs: release
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
-      - name: build linux amd64 version
+      - name: build Linux AMD64 Version
         run: |
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o xui-release -v main.go
           mkdir x-ui
@@ -55,14 +55,14 @@ jobs:
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GAYHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: x-ui-linux-amd64.tar.gz
           asset_name: x-ui-linux-amd64.tar.gz
           asset_content_type: application/gzip
   linuxarm64build:
-    name: build x-ui arm64 version
+    name: Build X-UI ARM64 version
     needs: release
     runs-on: ubuntu-latest
     steps:
@@ -71,7 +71,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
-      - name: build linux arm64 version
+      - name: build Linux arm64 Version
         run: |
           sudo apt-get update
           sudo apt install gcc-aarch64-linux-gnu
@@ -97,14 +97,14 @@ jobs:
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GAYHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: x-ui-linux-arm64.tar.gz
           asset_name: x-ui-linux-arm64.tar.gz
           asset_content_type: application/gzip
   linuxs390xbuild:
-    name: build x-ui s390x version
+    name: Build X-UI S390X version
     needs: release
     runs-on: ubuntu-latest
     steps:
@@ -139,7 +139,7 @@ jobs:
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GAYHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: x-ui-linux-s390x.tar.gz

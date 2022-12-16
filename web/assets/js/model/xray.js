@@ -1,19 +1,19 @@
 const Protocols = {
-    VMESS: 'vmess',
-    VLESS: 'vless',
-    TROJAN: 'trojan',
-    SHADOWSOCKS: 'shadowsocks',
-    DOKODEMO: 'dokodemo-door',
-    MTPROTO: 'mtproto',
-    SOCKS: 'socks',
-    HTTP: 'http',
+    VMESS: 'VMess',
+    VLESS: 'VLess',
+    TROJAN: 'Trojan',
+    SHADOWSOCKS: 'ShadowSocks',
+    DOKODEMO: 'Dokodemo-Door',
+    MTPROTO: 'MTProto',
+    SOCKS: 'Socks',
+    HTTP: 'HTTP',
 };
 
 const VmessMethods = {
-    AES_128_GCM: 'aes-128-gcm',
-    CHACHA20_POLY1305: 'chacha20-poly1305',
-    AUTO: 'auto',
-    NONE: 'none',
+    AES_128_GCM: 'AES-128-GCM',
+    CHACHA20_POLY1305: 'CHACHA20-Poly1305',
+    AUTO: 'Auto',
+    NONE: 'None',
 };
 
 const SSMethods = {
@@ -21,9 +21,9 @@ const SSMethods = {
     // AES_128_CFB: 'aes-128-cfb',
     // CHACHA20: 'chacha20',
     // CHACHA20_IETF: 'chacha20-ietf',
-    CHACHA20_POLY1305: 'chacha20-poly1305',
-    AES_256_GCM: 'aes-256-gcm',
-    AES_128_GCM: 'aes-128-gcm',
+    CHACHA20_POLY1305: 'CHACHA20-Poly1305',
+    AES_256_GCM: 'AES-356-GCM',
+    AES_128_GCM: 'AES-128-GCM',
 };
 
 const RULE_IP = {
@@ -41,9 +41,56 @@ const RULE_DOMAIN = {
 };
 
 const FLOW_CONTROL = {
-    ORIGIN: "xtls-rprx-origin",
-    DIRECT: "xtls-rprx-direct",
+    ORIGIN: "XTLS-RPRX-Origin",
+    DIRECT: "XTLS-RPRX-Direct",
 };
+
+function suggest_port() {
+    let ports = [];
+    let last_port = 10000;
+    var rows = document.getElementsByTagName("table")[0].rows;
+    if (rows.length > 1) {
+        for (var i=1; i<rows.length; i++) {
+            ports.push(parseInt(rows[i].cells[5].innerText))
+        }
+        ports.sort();
+        last_port = ports[ports.length - 1] + 1;
+    }
+    console.log("Last Port: " + last_port);
+    return last_port;
+}
+
+function suggest_password(length) {
+    let password = RandomUtil.randomSeq(length - 3);
+    let name = document.getElementsByClassName("ant-input")[0].value;
+    let port = suggest_port().toString().slice(-3);
+    if (name) { 
+        password = ''
+        console.log("name: " + name)
+        for (var i=0; i < name.length; i++) {
+            if (Math.round(Math.random())) {
+                password += name[i].toUpperCase();
+            }
+            else {
+                password += name[i];
+            }
+        }
+    }
+    password += '_' + port[Math.floor(Math.random()*port.length)];
+    password += port[Math.floor(Math.random()*port.length)];
+    console.log("Suggested Password: " + password);
+    return password;
+}
+
+function suggest_username(length) {
+    let username = RandomUtil.randomSeq(length);
+    if (document.getElementsByClassName("ant-input")[1].value) {
+        let name = document.getElementsByClassName("ant-input")[1].value;
+        username = name;
+    }
+    console.log("Suggested Username: " + username);
+    return username;
+}
 
 Object.freeze(Protocols);
 Object.freeze(VmessMethods);
@@ -601,7 +648,7 @@ class Sniffing extends XrayCommonClass {
 }
 
 class Inbound extends XrayCommonClass {
-    constructor(port=RandomUtil.randomIntRange(10000, 60000),
+    constructor(port=suggest_port(),
                 listen='',
                 protocol=Protocols.VMESS,
                 settings=null,
@@ -872,7 +919,7 @@ class Inbound extends XrayCommonClass {
     }
 
     reset() {
-        this.port = RandomUtil.randomIntRange(10000, 60000);
+        this.port = suggest_port();
         this.listen = '';
         this.protocol = Protocols.VMESS;
         this.settings = Inbound.Settings.getSettings(Protocols.VMESS);
@@ -881,7 +928,7 @@ class Inbound extends XrayCommonClass {
         this.sniffing = new Sniffing();
     }
 
-    genVmessLink(address='', remark='') {
+    genVmessLink(address='', remark='', clientIndex=0) {
         if (this.protocol !== Protocols.VMESS) {
             return '';
         }
@@ -934,8 +981,8 @@ class Inbound extends XrayCommonClass {
             ps: remark,
             add: address,
             port: this.port,
-            id: this.settings.vmesses[0].id,
-            aid: this.settings.vmesses[0].alterId,
+            id: this.settings.vmesses[clientIndex].id,
+            aid: this.settings.vmesses[clientIndex].alterId,
             net: network,
             type: type,
             host: host,
@@ -945,9 +992,9 @@ class Inbound extends XrayCommonClass {
         return 'vmess://' + base64(JSON.stringify(obj, null, 2));
     }
 
-    genVLESSLink(address = '', remark='') {
+    genVLESSLink(address = '', remark='', clientIndex=0) {
         const settings = this.settings;
-        const uuid = settings.vlesses[0].id;
+        const uuid = settings.vlesses[clientIndex].id;
         const port = this.port;
         const type = this.stream.network;
         const params = new Map();
@@ -1009,7 +1056,7 @@ class Inbound extends XrayCommonClass {
         }
 
         if (this.xtls) {
-            params.set("flow", this.settings.vlesses[0].flow);
+            params.set("flow", this.settings.vlesses[clientIndex].flow);
         }
 
         const link = `vless://${uuid}@${address}:${port}`;
@@ -1036,10 +1083,10 @@ class Inbound extends XrayCommonClass {
         return `trojan://${settings.clients[0].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
     }
 
-    genLink(address='', remark='') {
+    genLink(address='', remark='', clientIndex=0) {
         switch (this.protocol) {
-            case Protocols.VMESS: return this.genVmessLink(address, remark);
-            case Protocols.VLESS: return this.genVLESSLink(address, remark);
+            case Protocols.VMESS: return this.genVmessLink(address, remark, clientIndex);
+            case Protocols.VLESS: return this.genVLESSLink(address, remark, clientIndex);
             case Protocols.SHADOWSOCKS: return this.genSSLink(address, remark);
             case Protocols.TROJAN: return this.genTrojanLink(address, remark);
             default: return '';
@@ -1297,7 +1344,7 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
     }
 };
 Inbound.TrojanSettings.Client = class extends XrayCommonClass {
-    constructor(password=RandomUtil.randomSeq(10), flow=FLOW_CONTROL.DIRECT) {
+    constructor(password=suggest_password(10), flow=FLOW_CONTROL.DIRECT) {
         super();
         this.password = password;
         this.flow = flow;
@@ -1361,7 +1408,7 @@ Inbound.TrojanSettings.Fallback = class extends XrayCommonClass {
 Inbound.ShadowsocksSettings = class extends Inbound.Settings {
     constructor(protocol,
                 method=SSMethods.AES_256_GCM,
-                password=RandomUtil.randomSeq(10),
+                password=suggest_password(10),
                 network='tcp,udp'
     ) {
         super(protocol);
@@ -1487,7 +1534,7 @@ Inbound.SocksSettings = class extends Inbound.Settings {
     }
 };
 Inbound.SocksSettings.SocksAccount = class extends XrayCommonClass {
-    constructor(user=RandomUtil.randomSeq(10), pass=RandomUtil.randomSeq(10)) {
+    constructor(user=suggest_username(10), pass=suggest_password(10)) {
         super();
         this.user = user;
         this.pass = pass;
@@ -1527,7 +1574,7 @@ Inbound.HttpSettings = class extends Inbound.Settings {
 };
 
 Inbound.HttpSettings.HttpAccount = class extends XrayCommonClass {
-    constructor(user=RandomUtil.randomSeq(10), pass=RandomUtil.randomSeq(10)) {
+    constructor(user=suggest_username(10), pass=suggest_password(10)) {
         super();
         this.user = user;
         this.pass = pass;

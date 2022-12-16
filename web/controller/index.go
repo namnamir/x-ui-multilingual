@@ -39,45 +39,45 @@ func (a *IndexController) index(c *gin.Context) {
 		c.Redirect(http.StatusTemporaryRedirect, "xui/")
 		return
 	}
-	html(c, "login.html", "登录", nil)
+	html(c, "login.html", tr_login_title, nil)
 }
 
 func (a *IndexController) login(c *gin.Context) {
 	var form LoginForm
 	err := c.ShouldBind(&form)
 	if err != nil {
-		pureJsonMsg(c, false, "数据格式错误")
+		pureJsonMsg(c, false, tr_error_date)
 		return
 	}
 	if form.Username == "" {
-		pureJsonMsg(c, false, "请输入用户名")
+		pureJsonMsg(c, false, tr_error_username)
 		return
 	}
 	if form.Password == "" {
-		pureJsonMsg(c, false, "请输入密码")
+		pureJsonMsg(c, false, tr_error_password)
 		return
 	}
 	user := a.userService.CheckUser(form.Username, form.Password)
 	timeStr := time.Now().Format("2006-01-02 15:04:05")
 	if user == nil {
 		job.NewStatsNotifyJob().UserLoginNotify(form.Username, getRemoteIp(c), timeStr, 0)
-		logger.Infof("wrong username or password: \"%s\" \"%s\"", form.Username, form.Password)
-		pureJsonMsg(c, false, "用户名或密码错误")
+		logger.Infof(tr_error_login_logger, form.Username, form.Password)
+		pureJsonMsg(c, false, tr_error_login_web)
 		return
 	} else {
-		logger.Infof("%s login success,Ip Address:%s\n", form.Username, getRemoteIp(c))
+		logger.Infof(tr_success_login_logger_01, form.Username, getRemoteIp(c))
 		job.NewStatsNotifyJob().UserLoginNotify(form.Username, getRemoteIp(c), timeStr, 1)
 	}
 
 	err = session.SetLoginUser(c, user)
-	logger.Info("user", user.Id, "login success")
-	jsonMsg(c, "登录", err)
+	logger.Info(tr_success_login_logger_02, user.Id, tr_success_login_logger_03)
+	jsonMsg(c, tr_login, err)
 }
 
 func (a *IndexController) logout(c *gin.Context) {
 	user := session.GetLoginUser(c)
 	if user != nil {
-		logger.Info("user", user.Id, "logout")
+		logger.Info(tr_success_logout_logger_01, user.Id, tr_success_logout_logger_02)
 	}
 	session.ClearSession(c)
 	c.Redirect(http.StatusTemporaryRedirect, c.GetString("base_path"))
