@@ -1,0 +1,54 @@
+# Build a docker container and publish it to Dockerhub.
+
+name: Build x-ui-multilingual
+
+on:
+  release:
+      types: [published]
+
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+  IMAGE: x-ui-multilingual
+
+jobs:
+  docker_image:
+    name: Build x-ui-multilingual Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Docker configuration
+        run: |-
+          echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+
+      # Build the Docker image
+      - name: Build
+        run: |-
+          docker build \
+            --target release_candidate \
+            --tag "$DOCKER_USER/$IMAGE:$GITHUB_REF_NAME" \
+            --tag "$DOCKER_USER/$IMAGE:bullseye-$GITHUB_REF_NAME" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            -f Dockerfile \
+            .
+
+      - name: Scan for vulnerabilities
+        continue-on-error: true
+        uses: crazy-max/ghaction-container-scan@v2
+        with:
+          image: ${{ env.DOCKER_USER }}/${{ env.IMAGE }}:${{ github.ref_name }}
+
+      - name: Scan image
+        continue-on-error: true
+        uses: azure/container-scan@v0
+        with:
+          image-name: ${{ env.DOCKER_USER }}/${{ env.IMAGE }}:${{ github.ref_name }}
+
+      # Push the Docker image to Google Artifact Registry
+      - name: Publish
+        run: |-
+          docker push "$DOCKER_USER/$IMAGE:$GITHUB_REF_NAME"
+          docker push "$DOCKER_USER/$IMAGE:bullseye-$GITHUB_REF_NAME"
