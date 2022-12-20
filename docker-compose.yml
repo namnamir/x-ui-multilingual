@@ -1,0 +1,15 @@
+version: '3'
+services:
+  xui:
+    image: "${X_UI_IMAGE}"
+    container_name: x-ui-multilingual
+    environment:
+      - X_UI_PORT=${X_UI_PORT:-54321}
+      - X_UI_USERNAME=${X_UI_USERNAME:-admin}
+      - X_UI_PASSWORD=${X_UI_PASSWORD:-admin}
+    ports:
+      - "${X_UI_PUBLIC_PORT}:${X_UI_PORT:-54321}"
+    volumes:
+      - $PWD/.volume/db/:/etc/x-ui/
+      - $PWD/.volume/cert/:/root/cert/
+    restart: unless-stopped
