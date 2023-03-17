@@ -25,7 +25,6 @@ msg_06="This script can run on Ubuntu 16 or later!\n"
 msg_07="This script can run on Debian 8 or later!\n"
 msg_28="Installing ${purple}'wget'${plain}, ${purple}'curl'${plain}, and ${purple}'tar'${plain} packages.\n"
 msg_08="For security reasons, the port and the account password must be changed after the installation/update is completed.\n"
-msg_27="${yellow}Do you confirm? [y/n] "
 msg_09="${blue}Please enter the username: "
 msg_10="     └─ The username would be "
 msg_11="${blue}Please enter the password: "
@@ -60,6 +59,7 @@ msg_26="\n
   ${blue}x-ui uninstall    - ${plain}Uninstall X-UI
 ————————————————————————————————————————————————————————————————
 "
+msg_27="${yellow}Do you confirm? [y/n] "
 msg_28="${green}Installation is started ..."
 
 # other variables
